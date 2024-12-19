@@ -55,8 +55,12 @@ function registerNumKeyBindings(shortcutActions: ShortcutAction[], numKeyBinding
 function registerKeyBindings(world: World, config: Actions.Config) {
     const actions = new Actions(config);
     const shortcutActions: ShortcutAction[] = [];
+    const gestures: Gesturer[] = [];
 
     for (const keyBinding of getKeyBindings(world, actions)) {
+        if (keyBinding.name === "karousel-grid-scroll-right") {
+            gestures.push(new Gesturer("Right", catchWrap(keyBinding.action)));
+        }
         registerKeyBinding(shortcutActions, keyBinding);
     }
 
@@ -64,5 +68,8 @@ function registerKeyBindings(world: World, config: Actions.Config) {
         registerNumKeyBindings(shortcutActions, numKeyBinding);
     }
 
-    return shortcutActions;
+    return {
+        shortcuts: shortcutActions,
+        gestures: gestures
+    };
 }

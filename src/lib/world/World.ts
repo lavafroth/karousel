@@ -4,6 +4,7 @@ class World {
     private readonly pinManager: PinManager;
     private readonly workspaceSignalManager: SignalManager;
     private readonly shortcutActions: ShortcutAction[];
+    private readonly gestures: Gesturer[];
     private readonly screenResizedDelayer: Delayer;
 
     constructor(config: Config) {
@@ -20,11 +21,14 @@ class World {
             log("failed to parse presetWidths:", error);
         }
 
-        this.shortcutActions = registerKeyBindings(this, {
+        const binds = registerKeyBindings(this, {
             manualScrollStep: config.manualScrollStep,
             presetWidths: presetWidths,
             columnResizer: config.scrollingCentered ? new RawResizer(presetWidths) : new ContextualResizer(presetWidths),
         });
+
+        this.shortcutActions = binds.shortcuts;
+        this.gestures = binds.gestures;
 
         this.screenResizedDelayer = new Delayer(1000, () => {
             // this delay ensures that docks are taken into account by `Workspace.clientArea`

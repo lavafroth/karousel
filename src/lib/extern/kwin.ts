@@ -110,3 +110,8 @@ type ShortcutHandler = QmlObject & {
     readonly activated: QSignal<[]>;
     destroy(): void;
 };
+
+type SwipeGestureHandler = QmlObject & {
+    readonly activated: QSignal<[]>;
+    destroy(): void;
+};
